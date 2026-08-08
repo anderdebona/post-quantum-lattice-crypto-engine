@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Quantum Lattice Cryptography & Homomorphic Engine | anderdebona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --panel: rgba(17, 24, 39, 0.75);
+      --border: rgba(59, 130, 246, 0.2);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.4);
+      --green: #10b981;
+      --purple: #8b5cf6;
+      --text: #f3f4f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .brand { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; }
+    .btn { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; }
+    pre { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #93c5fd; overflow-x: auto; max-height: 250px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
+    th, td { border: 1px solid var(--border); padding: 0.75rem; text-align: left; }
+    th { background: rgba(30, 41, 59, 0.8); }
+    .badge-pq { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-weight: 700; }
+    .badge-vuln { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="brand">🔐 Post-Quantum Lattice & Homomorphic Engine</div>
+      <div style="font-size: 0.85rem; color: #94a3b8;">Learning With Errors (LWE) & Quantum-Resistant Cryptography • anderdebona</div>
+    </div>
+    <span class="badge-pq">NIST PQC Compliant Architecture</span>
+  </header>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>1. Lattice LWE Encryption & Decryption</h2>
+      <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 1rem;">
+        Generate lattice secret matrix $s \in \mathbb{Z}_q^n$ and discrete Gaussian noise error vector $e$.
+      </p>
+      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <input type="number" id="msgInput" value="1" min="0" max="3" style="padding: 0.5rem; background: #0f172a; border: 1px solid var(--border); color: white; border-radius: 0.5rem;">
+        <button class="btn" onclick="runLweEncrypt()">Encrypt Message Bit</button>
+      </div>
+      <pre id="cryptoOutput">Click to generate LWE ciphertext vector (u, v)...</pre>
+    </div>
+
+    <div class="panel">
+      <h2>2. Fully Homomorphic Addition $Enc(m_1) \oplus Enc(m_2)$</h2>
+      <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 1rem;">
+        Compute addition directly on ciphertexts without revealing plaintext messages to the server.
+      </p>
+      <button class="btn" onclick="runHomomorphicAdd()">Add Encrypted m1=1 and m2=2</button>
+      <pre id="homomorphicOutput">Homomorphic result Enc(1) + Enc(2) = Enc(3)...</pre>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top: 2rem;">
+    <h2>3. Quantum Resistance Matrix (Shor's Algorithm Analysis)</h2>
+    <table id="shorTable">
+      <thead>
+        <tr>
+          <th>Algorithm</th>
+          <th>Class</th>
+          <th>Shor's Algorithm Vulnerability</th>
+          <th>Quantum Complexity</th>
+          <th>Underlying Hard Problem</th>
+        </tr>
+      </thead>
+      <tbody id="shorBody">
+        <!-- Rendered via JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    async function runLweEncrypt() {
+      const message = parseInt(document.getElementById('msgInput').value);
+      const res = await fetch('/api/encrypt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json();
+      document.getElementById('cryptoOutput').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function runHomomorphicAdd() {
+      const res = await fetch('/api/homomorphic-add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ m1: 1, m2: 2 })
+      });
+      const data = await res.json();
+      document.getElementById('homomorphicOutput').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function loadShorTable() {
+      const res = await fetch('/api/shor-analysis');
+      const data = await res.json();
+      const body = document.getElementById('shorBody');
+      body.innerHTML = '';
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${item.algorithm}</strong></td>
+          <td><span class="${item.securityClass === 'POST_QUANTUM' ? 'badge-pq' : 'badge-vuln'}">${item.securityClass}</span></td>
+          <td>${item.shorAlgorithmVulnerability ? '❌ BROKEN BY SHOR' : '✅ QUANTUM IMMUNE'}</td>
+          <td><code>${item.quantumTimeComplexity}</code></td>
+          <td>${item.underlyingHardProblem}</td>
+        `;
+        body.appendChild(row);
+      });
+    }
+
+    window.onload = loadShorTable;
+  </script>
+</body>
+</html>
