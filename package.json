@@ -4,6 +4,9 @@
   "description": "PhD-Grade Post-Quantum Cryptography Engine Based on Lattice Learning With Errors (LWE) & Homomorphic Addition",
   "main": "dist/server.js",
   "type": "module",
+  "bin": {
+    "lattice-crypto": "./dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
