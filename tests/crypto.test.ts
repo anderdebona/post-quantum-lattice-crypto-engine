@@ -73,3 +73,23 @@ describe('Digital Signature', () => {
     });
   });
 });
+
+import { HashBasedSignatureScheme } from '../src/crypto/hash-signature.js';
+
+describe('Hash-Based Signature', () => {
+  it('should generate OTS keypair', () => {
+    const kp = HashBasedSignatureScheme.generateOTSKeypair(8);
+    expect(kp.privateKeys.length).toBe(8);
+    expect(kp.publicKeys.length).toBe(8);
+  });
+  it('should sign and verify messages', () => {
+    const kp = HashBasedSignatureScheme.generateOTSKeypair(8);
+    const sig = HashBasedSignatureScheme.sign('Hello PQC', kp.privateKeys);
+    expect(HashBasedSignatureScheme.verify('Hello PQC', sig)).toBe(true);
+  });
+  it('should reject tampered messages', () => {
+    const kp = HashBasedSignatureScheme.generateOTSKeypair(8);
+    const sig = HashBasedSignatureScheme.sign('Original', kp.privateKeys);
+    expect(HashBasedSignatureScheme.verify('Tampered', sig)).toBe(false);
+  });
+});
