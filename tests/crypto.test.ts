@@ -93,3 +93,34 @@ describe('Hash-Based Signature', () => {
     expect(HashBasedSignatureScheme.verify('Tampered', sig)).toBe(false);
   });
 });
+
+describe('RingLWEEncryptionScheme (v4.0.0)', () => {
+  it('should encrypt and decrypt bit in polynomial quotient ring Z_q[X]/(X^n+1)', async () => {
+    const { RingLWEEncryptionScheme } = await import('../src/crypto/ring-lwe.js');
+    const scheme = new RingLWEEncryptionScheme(8, 257);
+    const kp = scheme.generateKeyPair();
+
+    const ct1 = scheme.encryptBit(1, kp);
+    const pt1 = scheme.decryptBit(ct1, kp.secretKey);
+    expect(pt1).toBe(1);
+
+    const ct0 = scheme.encryptBit(0, kp);
+    const pt0 = scheme.decryptBit(ct0, kp.secretKey);
+    expect(pt0).toBe(0);
+  });
+});
+
+describe('KyberKemKeyExchange (v4.0.0)', () => {
+  it('should encapsulate and decapsulate shared secret agreement', async () => {
+    const { KyberKemKeyExchange } = await import('../src/crypto/kyber-kem.js');
+    const kem = new KyberKemKeyExchange(8, 257);
+    const kp = kem.generateKeypair();
+
+    const encap = kem.encapsulate(kp);
+    expect(encap.sharedSecretHash.startsWith('0x')).toBe(true);
+
+    const decapSecret = kem.decapsulate(encap.ciphertextBits);
+    expect(decapSecret).toBe(encap.sharedSecretHash);
+  });
+});
+

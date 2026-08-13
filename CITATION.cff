@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software in research or cryptography implementations, please cite it as below."
+authors:
+  - family-names: "Debona"
+    given-names: "Anderson"
+    alias: "anderdebona"
+title: "Post-Quantum Lattice Crypto Engine: Ring-LWE Encryption & Kyber-KEM Key Exchange"
+version: 4.0.0
+date-released: 2026-08-13
+url: "https://github.com/anderdebona/post-quantum-lattice-crypto-engine"
+license: MIT
