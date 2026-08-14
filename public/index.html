@@ -3,125 +3,142 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post-Quantum Lattice Cryptography & Homomorphic Engine | anderdebona</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <title>Post-Quantum Lattice Cryptography Studio | anderdebona</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090d16;
-      --panel: rgba(17, 24, 39, 0.75);
-      --border: rgba(59, 130, 246, 0.2);
-      --accent: #3b82f6;
-      --accent-glow: rgba(59, 130, 246, 0.4);
-      --green: #10b981;
+      --bg: #030712;
+      --panel: rgba(15, 23, 42, 0.8);
+      --border: rgba(16, 185, 129, 0.25);
+      --accent: #10b981;
+      --cyan: #06b6d4;
       --purple: #8b5cf6;
-      --text: #f3f4f6;
+      --text: #f9fafb;
+      --text-dim: #94a3b8;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 2rem; }
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-    .brand { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; }
-    .btn { background: linear-gradient(135deg, #3b82f6, #6366f1); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; }
-    pre { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); padding: 1rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #93c5fd; overflow-x: auto; max-height: 250px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
-    th, td { border: 1px solid var(--border); padding: 0.75rem; text-align: left; }
-    th { background: rgba(30, 41, 59, 0.8); }
-    .badge-pq { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-weight: 700; }
-    .badge-vuln { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-weight: 700; }
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); padding: 1.5rem; min-height: 100vh; background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 40%); }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .brand { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .status-badge { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; }
+
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem; text-align: center; }
+    .stat-val { font-size: 1.8rem; font-weight: 700; font-family: 'Fira Code', monospace; color: var(--accent); margin-top: 0.25rem; }
+    .stat-lbl { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; backdrop-filter: blur(12px); }
+    .panel-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; color: #a7f3d0; }
+
+    .btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s all; }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+    .btn-cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+
+    .controls { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    pre { background: rgba(2, 6, 23, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); padding: 0.75rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #6ee7b7; overflow-x: auto; max-height: 200px; }
   </style>
 </head>
 <body>
   <header>
     <div>
-      <div class="brand">🔐 Post-Quantum Lattice & Homomorphic Engine</div>
-      <div style="font-size: 0.85rem; color: #94a3b8;">Learning With Errors (LWE) & Quantum-Resistant Cryptography • anderdebona</div>
+      <div class="brand">🛡️ Post-Quantum Lattice Cryptography Studio 🔐</div>
+      <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.2rem;">Kyber-KEM Key Exchange • Ring-LWE Polynomials • Homomorphic Addition • by anderdebona</div>
     </div>
-    <span class="badge-pq">NIST PQC Compliant Architecture</span>
+    <span class="status-badge">● Shor Algorithm Immune</span>
   </header>
 
-  <div class="grid">
-    <div class="panel">
-      <h2>1. Lattice LWE Encryption & Decryption</h2>
-      <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 1rem;">
-        Generate lattice secret matrix $s \in \mathbb{Z}_q^n$ and discrete Gaussian noise error vector $e$.
-      </p>
-      <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-        <input type="number" id="msgInput" value="1" min="0" max="3" style="padding: 0.5rem; background: #0f172a; border: 1px solid var(--border); color: white; border-radius: 0.5rem;">
-        <button class="btn" onclick="runLweEncrypt()">Encrypt Message Bit</button>
-      </div>
-      <pre id="cryptoOutput">Click to generate LWE ciphertext vector (u, v)...</pre>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-lbl">Kyber Shared Secret</div>
+      <div class="stat-val" style="color: var(--accent);" id="statSecret">MATCH ✓</div>
     </div>
-
-    <div class="panel">
-      <h2>2. Fully Homomorphic Addition $Enc(m_1) \oplus Enc(m_2)$</h2>
-      <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.5rem; margin-bottom: 1rem;">
-        Compute addition directly on ciphertexts without revealing plaintext messages to the server.
-      </p>
-      <button class="btn" onclick="runHomomorphicAdd()">Add Encrypted m1=1 and m2=2</button>
-      <pre id="homomorphicOutput">Homomorphic result Enc(1) + Enc(2) = Enc(3)...</pre>
+    <div class="stat-card">
+      <div class="stat-lbl">Quantum Resistance</div>
+      <div class="stat-val" style="color: var(--cyan);">NIST Level 5</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Homomorphic Ops</div>
+      <div class="stat-val" style="color: var(--purple);">Addition E(m1+m2)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Lattice Problem</div>
+      <div class="stat-val">SVP / LWE</div>
     </div>
   </div>
 
-  <div class="panel" style="margin-top: 2rem;">
-    <h2>3. Quantum Resistance Matrix (Shor's Algorithm Analysis)</h2>
-    <table id="shorTable">
-      <thead>
-        <tr>
-          <th>Algorithm</th>
-          <th>Class</th>
-          <th>Shor's Algorithm Vulnerability</th>
-          <th>Quantum Complexity</th>
-          <th>Underlying Hard Problem</th>
-        </tr>
-      </thead>
-      <tbody id="shorBody">
-        <!-- Rendered via JS -->
-      </tbody>
-    </table>
+  <div class="main-grid">
+    <div class="panel">
+      <div class="panel-title">
+        <span>🔑 Alice & Bob Kyber-KEM Key Encapsulation</span>
+      </div>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1rem;">
+        Performs post-quantum key establishment over noisy lattice polynomials without exposing shared keys to quantum sniffers.
+      </p>
+      <div class="controls">
+        <button class="btn btn-cyan" onclick="runKyberKEM()">Run Kyber-KEM Key Exchange</button>
+        <button class="btn" onclick="runRingLWE(1)">Test Ring-LWE Bit (1)</button>
+        <button class="btn" onclick="runRingLWE(0)">Test Ring-LWE Bit (0)</button>
+      </div>
+      <pre id="kyberLog">Click button to execute Kyber-KEM key exchange...</pre>
+
+      <div class="panel-title" style="margin-top: 1rem;">
+        <span>🧮 Homomorphic Addition Over Encrypted Ciphertext</span>
+      </div>
+      <div class="controls">
+        <button class="btn" onclick="runHomomorphicAdd(5, 7)">Add E(5) + E(7)</button>
+        <button class="btn" onclick="runHomomorphicAdd(12, 18)">Add E(12) + E(18)</button>
+      </div>
+      <pre id="homoLog">Awaiting homomorphic addition...</pre>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">
+        <span>⚡ Shor's Algorithm Vulnerability Matrix</span>
+      </div>
+      <pre id="shorLog">Loading Shor analysis...</pre>
+    </div>
   </div>
 
   <script>
-    async function runLweEncrypt() {
-      const message = parseInt(document.getElementById('msgInput').value);
-      const res = await fetch('/api/encrypt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message })
-      });
+    async function runKyberKEM() {
+      const res = await fetch('/api/crypto/kyber-kem', { method: 'POST' });
       const data = await res.json();
-      document.getElementById('cryptoOutput').innerText = JSON.stringify(data, null, 2);
+      document.getElementById('statSecret').innerText = data.secretsMatch ? 'MATCH ✓' : 'MISMATCH ✗';
+      document.getElementById('kyberLog').innerText = JSON.stringify(data, null, 2);
     }
 
-    async function runHomomorphicAdd() {
+    async function runRingLWE(bit) {
+      const res = await fetch('/api/crypto/ring-lwe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bit })
+      });
+      const data = await res.json();
+      document.getElementById('kyberLog').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function runHomomorphicAdd(m1, m2) {
       const res = await fetch('/api/homomorphic-add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ m1: 1, m2: 2 })
+        body: JSON.stringify({ m1, m2 })
       });
       const data = await res.json();
-      document.getElementById('homomorphicOutput').innerText = JSON.stringify(data, null, 2);
+      document.getElementById('homoLog').innerText = JSON.stringify(data, null, 2);
     }
 
-    async function loadShorTable() {
+    async function loadShor() {
       const res = await fetch('/api/shor-analysis');
       const data = await res.json();
-      const body = document.getElementById('shorBody');
-      body.innerHTML = '';
-      data.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td><strong>${item.algorithm}</strong></td>
-          <td><span class="${item.securityClass === 'POST_QUANTUM' ? 'badge-pq' : 'badge-vuln'}">${item.securityClass}</span></td>
-          <td>${item.shorAlgorithmVulnerability ? '❌ BROKEN BY SHOR' : '✅ QUANTUM IMMUNE'}</td>
-          <td><code>${item.quantumTimeComplexity}</code></td>
-          <td>${item.underlyingHardProblem}</td>
-        `;
-        body.appendChild(row);
-      });
+      document.getElementById('shorLog').innerText = JSON.stringify(data, null, 2);
     }
 
-    window.onload = loadShorTable;
+    window.onload = () => {
+      runKyberKEM();
+      runHomomorphicAdd(3, 4);
+      loadShor();
+    };
   </script>
 </body>
 </html>
