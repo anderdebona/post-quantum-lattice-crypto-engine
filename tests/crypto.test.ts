@@ -124,3 +124,39 @@ describe('KyberKemKeyExchange (v4.0.0)', () => {
   });
 });
 
+describe('DilithiumMLDSAEngine (v5.0.0)', () => {
+  it('should generate ML-DSA keys, sign payload, and verify signature under rejection bounds', async () => {
+    const { DilithiumMLDSAEngine } = await import('../src/crypto/dilithium-mldsa.js');
+    const engine = new DilithiumMLDSAEngine();
+
+    const kp = engine.generateKeyPair();
+    expect(kp.publicKey.t1.length).toBe(8);
+
+    const message = 'Post-Quantum Financial Settlement Tx #99482';
+    const signature = engine.sign(message, kp);
+    expect(signature.z.length).toBe(8);
+
+    const isValid = engine.verify(message, signature, kp.publicKey);
+    expect(isValid).toBe(true);
+  });
+});
+
+describe('FalconFNDSAEngine (v5.0.0)', () => {
+  it('should generate Falcon keys, sign with discrete Gaussian sampler, and verify norm bound', async () => {
+    const { FalconFNDSAEngine } = await import('../src/crypto/falcon-fndsa.js');
+    const falcon = new FalconFNDSAEngine();
+
+    const kp = falcon.generateKeyPair();
+    expect(kp.h.length).toBe(8);
+
+    const msg = 'Confidential Top-Secret Post-Quantum Payload';
+    const sig = falcon.sign(msg, kp);
+    expect(sig.s2.length).toBe(8);
+    expect(sig.r.length).toBe(80);
+
+    const verified = falcon.verify(msg, sig, kp);
+    expect(verified).toBe(true);
+  });
+});
+
+

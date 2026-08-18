@@ -6,6 +6,8 @@ import { HomomorphicLatticeEngine } from './crypto/homomorphic.js';
 import { QuantumSecurityAnalyzer } from './crypto/shor-comparison.js';
 import { RingLWEEncryptionScheme } from './crypto/ring-lwe.js';
 import { KyberKemKeyExchange } from './crypto/kyber-kem.js';
+import { DilithiumMLDSAEngine } from './crypto/dilithium-mldsa.js';
+import { FalconFNDSAEngine } from './crypto/falcon-fndsa.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,6 +23,8 @@ const keyPair = engine.generateKeyPair();
 
 const ringEngine = new RingLWEEncryptionScheme(8, 257);
 const kyberKem = new KyberKemKeyExchange(8, 257);
+const dilithium = new DilithiumMLDSAEngine();
+const falcon = new FalconFNDSAEngine();
 
 app.post('/api/encrypt', (req, res) => {
   const { message = 1 } = req.body;
@@ -84,10 +88,40 @@ app.post('/api/crypto/kyber-kem', (req, res) => {
   });
 });
 
+app.post('/api/crypto/dilithium', (req, res) => {
+  const { message = 'Settlement Authorization Tx #58219' } = req.body;
+  const kp = dilithium.generateKeyPair();
+  const signature = dilithium.sign(message, kp);
+  const isValid = dilithium.verify(message, signature, kp.publicKey);
+
+  res.json({
+    algorithm: 'NIST FIPS 204 Crystals-Dilithium (ML-DSA)',
+    message,
+    publicKey: kp.publicKey,
+    signature,
+    isValid
+  });
+});
+
+app.post('/api/crypto/falcon', (req, res) => {
+  const { message = 'Classified Post-Quantum Transmission' } = req.body;
+  const kp = falcon.generateKeyPair();
+  const signature = falcon.sign(message, kp);
+  const isValid = falcon.verify(message, signature, kp);
+
+  res.json({
+    algorithm: 'NIST FIPS 206 Falcon (FN-DSA)',
+    message,
+    publicKeyH: kp.h,
+    signature,
+    isValid
+  });
+});
+
 app.get('/api/shor-analysis', (req, res) => {
   res.json(QuantumSecurityAnalyzer.getAlgorithmComparisons());
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Post-Quantum Lattice Crypto Engine Turbocharged on http://localhost:${PORT}`);
+  console.log(`🚀 Post-Quantum Lattice Crypto Engine v5.0.0 on http://localhost:${PORT}`);
 });

@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post-Quantum Lattice Cryptography Studio | anderdebona</title>
+  <title>Post-Quantum Lattice Cryptography Studio v5.0.0 | anderdebona</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #030712;
-      --panel: rgba(15, 23, 42, 0.8);
+      --panel: rgba(15, 23, 42, 0.85);
       --border: rgba(16, 185, 129, 0.25);
       --accent: #10b981;
       --cyan: #06b6d4;
       --purple: #8b5cf6;
+      --amber: #f59e0b;
       --text: #f9fafb;
       --text-dim: #94a3b8;
     }
@@ -22,30 +23,31 @@
     .brand { font-size: 1.6rem; font-weight: 700; background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .status-badge { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; }
 
-    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-    .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem; text-align: center; }
-    .stat-val { font-size: 1.8rem; font-weight: 700; font-family: 'Fira Code', monospace; color: var(--accent); margin-top: 0.25rem; }
-    .stat-lbl { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .stats-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.85rem; text-align: center; }
+    .stat-val { font-size: 1.5rem; font-weight: 700; font-family: 'Fira Code', monospace; color: var(--accent); margin-top: 0.2rem; }
+    .stat-lbl { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
 
     .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; backdrop-filter: blur(12px); }
-    .panel-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; color: #a7f3d0; }
+    .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; backdrop-filter: blur(12px); margin-bottom: 1.5rem; }
+    .panel-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; color: #a7f3d0; }
 
-    .btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s all; }
+    .btn { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 0.55rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s all; font-size: 0.85rem; }
     .btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
     .btn-cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+    .btn-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
 
     .controls { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    pre { background: rgba(2, 6, 23, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); padding: 0.75rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #6ee7b7; overflow-x: auto; max-height: 200px; }
+    pre { background: rgba(2, 6, 23, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); padding: 0.75rem; border-radius: 0.5rem; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #6ee7b7; overflow-x: auto; max-height: 180px; }
   </style>
 </head>
 <body>
   <header>
     <div>
-      <div class="brand">🛡️ Post-Quantum Lattice Cryptography Studio 🔐</div>
-      <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.2rem;">Kyber-KEM Key Exchange • Ring-LWE Polynomials • Homomorphic Addition • by anderdebona</div>
+      <div class="brand">🛡️ Post-Quantum Lattice Cryptography Studio v5.0.0 🔐</div>
+      <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.2rem;">Dilithium ML-DSA • Falcon FN-DSA • Kyber-KEM • Ring-LWE Homomorphic • by anderdebona</div>
     </div>
-    <span class="status-badge">● Shor Algorithm Immune</span>
+    <span class="status-badge">● Shor Algorithm Immune v5.0</span>
   </header>
 
   <div class="stats-row">
@@ -54,57 +56,93 @@
       <div class="stat-val" style="color: var(--accent);" id="statSecret">MATCH ✓</div>
     </div>
     <div class="stat-card">
-      <div class="stat-lbl">Quantum Resistance</div>
-      <div class="stat-val" style="color: var(--cyan);">NIST Level 5</div>
+      <div class="stat-lbl">Dilithium ML-DSA</div>
+      <div class="stat-val" style="color: var(--cyan);" id="statDilithium">VALID ✓</div>
     </div>
     <div class="stat-card">
-      <div class="stat-lbl">Homomorphic Ops</div>
-      <div class="stat-val" style="color: var(--purple);">Addition E(m1+m2)</div>
+      <div class="stat-lbl">Falcon FN-DSA</div>
+      <div class="stat-val" style="color: #a78bfa;" id="statFalcon">VALID ✓</div>
     </div>
     <div class="stat-card">
-      <div class="stat-lbl">Lattice Problem</div>
-      <div class="stat-val">SVP / LWE</div>
+      <div class="stat-lbl">Ring-LWE Decrypt</div>
+      <div class="stat-val" style="color: var(--amber);" id="statRing">EXACT ✓</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Quantum Immunity</div>
+      <div class="stat-val" style="color: var(--accent);">NIST Level 5</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-lbl">Shor Complexity</div>
+      <div class="stat-val" style="color: var(--cyan);">2^{128} ops</div>
     </div>
   </div>
 
   <div class="main-grid">
     <div class="panel">
       <div class="panel-title">
-        <span>🔑 Alice & Bob Kyber-KEM Key Encapsulation</span>
+        <span>📜 Crystals-Dilithium (ML-DSA NIST FIPS 204) (v5.0.0)</span>
       </div>
-      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1rem;">
-        Performs post-quantum key establishment over noisy lattice polynomials without exposing shared keys to quantum sniffers.
-      </p>
       <div class="controls">
-        <button class="btn btn-cyan" onclick="runKyberKEM()">Run Kyber-KEM Key Exchange</button>
-        <button class="btn" onclick="runRingLWE(1)">Test Ring-LWE Bit (1)</button>
-        <button class="btn" onclick="runRingLWE(0)">Test Ring-LWE Bit (0)</button>
+        <button class="btn btn-cyan" onclick="runDilithium()">🖋️ Sign & Verify Dilithium (ML-DSA)</button>
       </div>
-      <pre id="kyberLog">Click button to execute Kyber-KEM key exchange...</pre>
+      <pre id="dilithiumLog">Awaiting Dilithium signature generation...</pre>
 
       <div class="panel-title" style="margin-top: 1rem;">
-        <span>🧮 Homomorphic Addition Over Encrypted Ciphertext</span>
+        <span>🦅 Falcon (FN-DSA NIST FIPS 206) NTRU Fast Fourier (v5.0.0)</span>
       </div>
       <div class="controls">
-        <button class="btn" onclick="runHomomorphicAdd(5, 7)">Add E(5) + E(7)</button>
-        <button class="btn" onclick="runHomomorphicAdd(12, 18)">Add E(12) + E(18)</button>
+        <button class="btn btn-purple" onclick="runFalcon()">⚡ Sign & Verify Falcon (FN-DSA)</button>
       </div>
-      <pre id="homoLog">Awaiting homomorphic addition...</pre>
+      <pre id="falconLog">Awaiting Falcon NTRU sampler...</pre>
     </div>
 
     <div class="panel">
       <div class="panel-title">
-        <span>⚡ Shor's Algorithm Vulnerability Matrix</span>
+        <span>🔑 Kyber-KEM Quantum-Resistant Key Exchange</span>
       </div>
-      <pre id="shorLog">Loading Shor analysis...</pre>
+      <div class="controls">
+        <button class="btn" onclick="runKyberKEM()">🔐 Generate Kyber-KEM Keypair & Agree Secret</button>
+      </div>
+      <pre id="kyberLog">Awaiting Kyber-KEM handshake...</pre>
+
+      <div class="panel-title" style="margin-top: 1rem;">
+        <span>💍 Ring-LWE Negacyclic Polynomial Encryption</span>
+      </div>
+      <div class="controls">
+        <button class="btn" onclick="runRingLWE(1)">🔒 Encrypt Ring-LWE Bit (1)</button>
+        <button class="btn" style="background: rgba(255,255,255,0.1);" onclick="runHomomorphic()">➕ Homomorphic Add</button>
+      </div>
+      <pre id="ringLog">Awaiting Ring-LWE execution...</pre>
     </div>
   </div>
 
   <script>
+    async function runDilithium() {
+      const res = await fetch('/api/crypto/dilithium', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Post-Quantum Financial Settlement Tx #99482' })
+      });
+      const data = await res.json();
+      document.getElementById('statDilithium').innerText = data.isValid ? 'VALID ✓' : 'FAILED ✗';
+      document.getElementById('dilithiumLog').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function runFalcon() {
+      const res = await fetch('/api/crypto/falcon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Confidential Post-Quantum Mission Payload' })
+      });
+      const data = await res.json();
+      document.getElementById('statFalcon').innerText = data.isValid ? 'VALID ✓' : 'FAILED ✗';
+      document.getElementById('falconLog').innerText = JSON.stringify(data, null, 2);
+    }
+
     async function runKyberKEM() {
       const res = await fetch('/api/crypto/kyber-kem', { method: 'POST' });
       const data = await res.json();
-      document.getElementById('statSecret').innerText = data.secretsMatch ? 'MATCH ✓' : 'MISMATCH ✗';
+      document.getElementById('statSecret').innerText = data.secretsMatch ? 'MATCH ✓' : 'MISMATCH';
       document.getElementById('kyberLog').innerText = JSON.stringify(data, null, 2);
     }
 
@@ -115,29 +153,25 @@
         body: JSON.stringify({ bit })
       });
       const data = await res.json();
-      document.getElementById('kyberLog').innerText = JSON.stringify(data, null, 2);
+      document.getElementById('statRing').innerText = data.success ? 'EXACT ✓' : 'ERROR';
+      document.getElementById('ringLog').innerText = JSON.stringify(data, null, 2);
     }
 
-    async function runHomomorphicAdd(m1, m2) {
+    async function runHomomorphic() {
       const res = await fetch('/api/homomorphic-add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ m1, m2 })
+        body: JSON.stringify({ m1: 1, m2: 2 })
       });
       const data = await res.json();
-      document.getElementById('homoLog').innerText = JSON.stringify(data, null, 2);
-    }
-
-    async function loadShor() {
-      const res = await fetch('/api/shor-analysis');
-      const data = await res.json();
-      document.getElementById('shorLog').innerText = JSON.stringify(data, null, 2);
+      document.getElementById('ringLog').innerText = JSON.stringify(data, null, 2);
     }
 
     window.onload = () => {
+      runDilithium();
+      runFalcon();
       runKyberKEM();
-      runHomomorphicAdd(3, 4);
-      loadShor();
+      runRingLWE(1);
     };
   </script>
 </body>

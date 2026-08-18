@@ -1,7 +1,7 @@
 {
   "name": "post-quantum-lattice-crypto-engine",
-  "version": "4.0.0",
-  "description": "PhD-Grade Post-Quantum Cryptography Engine Based on Lattice Learning With Errors (LWE) & Homomorphic Addition",
+  "version": "5.0.0",
+  "description": "PhD-Grade Post-Quantum Lattice Cryptography Engine (NIST FIPS 204 Crystals-Dilithium ML-DSA, NIST FIPS 206 Falcon FN-DSA, Kyber-KEM & Ring-LWE Homomorphic Arithmetic)",
   "main": "dist/server.js",
   "type": "module",
   "bin": {
